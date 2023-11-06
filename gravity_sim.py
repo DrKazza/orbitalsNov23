@@ -16,13 +16,12 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Gravity Simulation")
 
 # Set up colours
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-YELLOW = (255,255,0)
-RED = (188,39,50)
-GREEN = (0,255,0)
-BLUE = (100,149,237)
-DARK_GREY = (80,78,81)
+colourPallette = [(255,255,255),
+                  (255,255,0),
+                  (188,39,50),
+                  (0,255,0),
+                  (100,149,237),
+                  (80,78,81)]
 
 
 def generateParticles(numParts, rotationSpeed):
@@ -65,7 +64,7 @@ def drawParticles(partics):
     for part in partics:
         [xCoord, yCoord] = part['position']
         radius = part['radius']
-        pygame.draw.circle(WIN, WHITE, (xCoord + WIDTH / 2, yCoord + HEIGHT / 2), radius[0])
+        pygame.draw.circle(WIN, colourPallette[part['mass']], (xCoord + WIDTH / 2, yCoord + HEIGHT / 2), radius[0])
 
 def calcParticlePos(partics):
     numPartics = len(partics)
