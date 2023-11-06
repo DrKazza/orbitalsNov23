@@ -4,9 +4,11 @@ import pygame
 pygame.init()
 
 # Assign global variables, time interval and bigG#
-bigG = 10000
+bigG = 1000
 dt = 0.01
 density = 0.1
+totalParticles = 200
+initialRotation = 0.2
 
 # Set up Pygame variables
 WIDTH, HEIGHT = 800,800
@@ -21,6 +23,24 @@ RED = (188,39,50)
 GREEN = (0,255,0)
 BLUE = (100,149,237)
 DARK_GREY = (80,78,81)
+
+
+def generateParticles(numParts, rotationSpeed):
+    # Assign starting points
+    particleData = np.zeros(numParts, dtype= [('position', float, (2,)),
+                                    ('velocity', float, (2,)),
+                                    ('mass', float, (1,)),
+                                    ('radius', float, (1,))])
+    particleData['position'] = (np.random.rand(numParts, 2) - 0.5) * [WIDTH / 2, HEIGHT / 2]
+    particleData['mass'] = np.ones((numParts, 1))
+
+    # Calculated starting points
+    particleData['radius'] = np.cbrt(particleData['mass'] / density)
+    particleData['velocity'][:,0] = -particleData['position'][:,1]
+    particleData['velocity'][:,1] = particleData['position'][:,0]
+    particleData['velocity'] *= rotationSpeed
+    return particleData
+
 
 def defineParticles():
     # Assign starting points
@@ -91,7 +111,7 @@ def main():
     run = True
     clock = pygame.time.Clock()
 
-    particles = defineParticles()
+    particles = generateParticles(totalParticles, initialRotation)
 
     while run:
         clock.tick(60)
